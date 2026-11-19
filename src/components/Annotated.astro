@@ -1,0 +1,169 @@
+---
+/**
+ * Captura anotada: imagen real de la app con marcadores numerados en HTML/CSS y la misma
+ * información como lista de texto debajo (constitution P2 y P4).
+ *
+ * Sin `image`, muestra un bloque PENDIENTE del mismo tamaño (constitution P6).
+ */
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+export interface Annotation {
+  /** Posición del marcador en % del ancho y del alto de la imagen. */
+  x: number;
+  y: number;
+  label: string;
+  text?: string;
+}
+
+interface Props {
+  image?: ImageMetadata;
+  alt: string;
+  annotations?: Annotation[];
+  caption?: string;
+  /** true solo para la captura del hero: carga inmediata y prioridad alta. */
+  priority?: boolean;
+  /** Relación de aspecto del placeholder cuando no hay imagen. */
+  aspect?: string;
+}
+
+const { image, alt, annotations = [], caption, priority = false, aspect = '16 / 10' } = Astro.props;
+---
+
+<figure class="annotated">
+  <div class="annotated__frame" style={image ? undefined : `aspect-ratio: ${aspect}`}>
+    {
+      image ? (
+        <Picture
+          src={image}
+          alt={alt}
+          formats={['avif', 'webp']}
+          widths={[640, 960, 1280, 1920]}
+          sizes="(min-width: 70rem) 46rem, 100vw"
+          loading={priority ? 'eager' : 'lazy'}
+          fetchpriority={priority ? 'high' : 'auto'}
+          decoding="async"
+        />
+      ) : (
+        <div class="annotated__pending" role="img" aria-label={`Captura pendiente: ${alt}`}>
+          <span class="label">Pendiente · captura</span>
+          <span class="muted">{alt}</span>
+        </div>
+      )
+    }
+    {
+      annotations.map((a, i) => (
+        <span class="annotated__marker" style={`left: ${a.x}%; top: ${a.y}%`} aria-hidden="true">
+          {i + 1}
+        </span>
+      ))
+    }
+  </div>
+  {
+    (annotations.length > 0 || caption) && (
+      <figcaption class="annotated__caption">
+        {caption && <p class="muted">{caption}</p>}
+        {annotations.length > 0 && (
+          <ol class="annotated__list">
+            {annotations.map((a, i) => (
+              <li>
+                <span class="annotated__n" aria-hidden="true">
+                  {i + 1}
+                </span>
+                <span>
+                  <strong>{a.label}</strong>
+                  {a.text && <span class="muted"> {a.text}</span>}
+                </span>
+              </li>
+            ))}
+          </ol>
+        )}
+      </figcaption>
+    )
+  }
+</figure>
+
+<style>
+  .annotated {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .annotated__frame {
+    position: relative;
+    border: var(--border);
+    border-radius: var(--radius);
+    background: var(--c-surface);
+  }
+
+  .annotated__frame :global(img) {
+    width: 100%;
+    border-radius: var(--radius);
+  }
+
+  .annotated__pending {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-content: center;
+    gap: var(--space-2);
+    padding: var(--space-5);
+    text-align: center;
+    background: var(--c-placeholder);
+    border-radius: var(--radius);
+    font-size: var(--step--1);
+  }
+
+  .annotated__marker,
+  .annotated__n {
+    display: inline-grid;
+    place-items: center;
+    flex: none;
+    width: 1.625rem;
+    height: 1.625rem;
+    border-radius: 50%;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    line-height: 1;
+  }
+
+  .annotated__marker {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    background: var(--c-accent);
+    color: var(--c-on-accent);
+    box-shadow: 0 0 0 2px var(--c-bg); /* anillo sólido que separa el marcador de la captura, no sombra */
+  }
+
+  .annotated__caption {
+    display: grid;
+    gap: var(--space-3);
+    font-size: var(--step--1);
+  }
+
+  .annotated__list {
+    display: grid;
+    gap: var(--space-3);
+    padding: 0;
+    list-style: none;
+  }
+
+  .annotated__list li {
+    display: flex;
+    gap: var(--space-3);
+    align-items: baseline;
+  }
+
+  .annotated__n {
+    background: var(--c-accent-weak);
+    color: var(--c-accent);
+  }
+
+  @media (min-width: 48rem) {
+    .annotated__list {
+      grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+      gap: var(--space-3) var(--space-5);
+    }
+  }
+</style>

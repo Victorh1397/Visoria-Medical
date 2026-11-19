@@ -1,0 +1,89 @@
+---
+import Logo from '@/components/Logo.astro';
+import Button from '@/components/Button.astro';
+import { site } from '@/config/site';
+---
+
+<header class="header">
+  <div class="container header__inner">
+    <a href="/" class="header__home" aria-label="Visoria Medical, ir al inicio">
+      <Logo height={34} eager />
+    </a>
+    <nav aria-label="Principal" class="header__nav">
+      <ul>
+        {
+          site.nav.map((item) => (
+            <li>
+              <a href={item.href}>{item.label}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+    <Button href={site.cta.href} size="sm">{site.cta.label}</Button>
+  </div>
+</header>
+
+<style>
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--c-bg);
+    border-bottom: var(--border);
+  }
+
+  .header__inner {
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+    min-height: var(--header-h);
+  }
+
+  .header__home {
+    display: block;
+    margin-right: auto;
+    text-decoration: none;
+  }
+
+  .header__home :global(img) {
+    width: auto;
+    height: 30px;
+  }
+
+  .header__nav ul {
+    display: flex;
+    gap: var(--space-6);
+    padding: 0;
+    list-style: none;
+  }
+
+  .header__nav a {
+    color: var(--c-text);
+    font-size: var(--step--1);
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  .header__nav a:hover {
+    color: var(--c-accent);
+    text-decoration: underline;
+  }
+
+  /* En móvil solo quedan logo y CTA: sin menú hamburguesa ni JS. */
+  @media (max-width: 47.99rem) {
+    .header__nav {
+      display: none;
+    }
+
+    .header__home :global(img) {
+      height: 26px;
+    }
+  }
+
+  @media (min-width: 48rem) {
+    .header__home :global(img) {
+      height: 34px;
+    }
+  }
+</style>

@@ -1,0 +1,192 @@
+---
+/**
+ * Página de referencia del design system: /_estilos (spec 002 R9).
+ * Solo existe en desarrollo: en el build de producción getStaticPaths no devuelve rutas.
+ */
+import Base from '@/layouts/Base.astro';
+import Button from '@/components/Button.astro';
+import Section from '@/components/Section.astro';
+import NumberedList from '@/components/NumberedList.astro';
+import Annotated from '@/components/Annotated.astro';
+
+export function getStaticPaths() {
+  return import.meta.env.DEV ? [{ params: { estilos: '_estilos' } }] : [];
+}
+
+const colors = [
+  ['--c-bg', 'Fondo'],
+  ['--c-surface', 'Superficie: bandas y fondo de capturas'],
+  ['--c-line', 'Líneas de 1 px'],
+  ['--c-line-strong', 'Borde del botón secundario'],
+  ['--c-text', 'Texto principal'],
+  ['--c-text-muted', 'Texto secundario'],
+  ['--c-accent', 'Acento: CTA, enlaces, foco, marcadores'],
+  ['--c-accent-hover', 'Hover del acento'],
+  ['--c-accent-weak', 'Fondo de números de anotación'],
+  ['--c-error', 'Errores de formulario'],
+  ['--c-placeholder', 'Bloques PENDIENTE'],
+];
+
+const steps = ['--step-5', '--step-4', '--step-3', '--step-2', '--step-1', '--step-0', '--step--1'];
+
+const listItems = [
+  { title: 'Ficha del paciente', text: 'Texto de ejemplo. Una o dos frases que explican qué resuelve la función.' },
+  { title: 'Evolución y recetas', text: 'Texto de ejemplo. Las filas se separan con líneas finas, sin tarjetas.' },
+  { title: 'Permisos por rol', text: 'Texto de ejemplo. La numeración va en mono y en el color de acento.' },
+];
+
+const annotations = [
+  { x: 18, y: 22, label: 'Datos del paciente', text: 'nombre, edad y alergias siempre visibles.' },
+  { x: 62, y: 40, label: 'Evolución', text: 'notas de cada consulta en orden cronológico.' },
+  { x: 40, y: 78, label: 'Recetas', text: 'se imprimen desde la misma ficha.' },
+];
+---
+
+<Base title="Estilos" noindex>
+  <div class="container intro">
+    <p class="label">Solo desarrollo · spec 002</p>
+    <h1>Design system</h1>
+    <p class="muted measure">
+      Referencia visual de tokens y componentes. Esta página no se publica: getStaticPaths solo devuelve rutas en
+      desarrollo.
+    </p>
+  </div>
+
+  <Section id="color" index="01" label="Color" title="Paleta">
+    <ul class="swatches">
+      {
+        colors.map(([token, use]) => (
+          <li class="swatch">
+            <span class="swatch__chip" style={`background: var(${token})`} />
+            <code>{token}</code>
+            <span class="swatch__hex label" data-token={token} />
+            <span class="muted">{use}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+
+  <Section id="tipografia" index="02" label="Tipografía" title="IBM Plex Sans y Plex Mono">
+    <div class="type">
+      {
+        steps.map((s) => (
+          <div class="type__row">
+            <code class="label">{s}</code>
+            <p style={`font-size: var(${s}); font-weight: ${s === '--step-5' || s === '--step-4' ? 600 : 400}`}>
+              Historias clínicas que se leen en segundos
+            </p>
+          </div>
+        ))
+      }
+      <div class="type__row">
+        <code class="label">.label</code>
+        <p class="label">Para consultorios y clínicas · 01 · Mono 500</p>
+      </div>
+      <div class="type__row">
+        <code class="label">párrafo</code>
+        <p class="measure">
+          Texto de cuerpo a 17 px con interlineado 1.6 y un ancho máximo de 68 caracteres. Los <a href="#color"
+            >enlaces van subrayados</a
+          > porque el acento apenas se distingue del texto por color.
+        </p>
+      </div>
+    </div>
+  </Section>
+
+  <Section id="botones" index="03" label="Componentes" title="Botones">
+    <div class="row">
+      <Button href="#botones">Solicitar demo</Button>
+      <Button href="#botones" variant="secondary">Ver funciones</Button>
+      <Button size="sm">Solicitar demo</Button>
+      <Button size="sm" variant="secondary">Secundario pequeño</Button>
+    </div>
+    <p class="muted note">Pulse Tab para ver el anillo de foco en cada elemento.</p>
+  </Section>
+
+  <Section id="lista" index="04" label="Componentes" title="Lista numerada">
+    <NumberedList items={listItems} />
+  </Section>
+
+  <Section id="captura" index="05" label="Componentes" title="Captura anotada">
+    <Annotated
+      alt="Ficha de un paciente ficticio en Visoria"
+      annotations={annotations}
+      caption="Sin imagen se muestra el bloque PENDIENTE; los marcadores se posicionan en % sobre la captura."
+    />
+  </Section>
+</Base>
+
+<script>
+  // Muestra el valor real de cada token (solo en esta página de desarrollo).
+  const styles = getComputedStyle(document.documentElement);
+  document.querySelectorAll<HTMLElement>('[data-token]').forEach((el) => {
+    el.textContent = styles.getPropertyValue(el.dataset.token ?? '').trim();
+  });
+</script>
+
+<style>
+  .intro {
+    display: grid;
+    gap: var(--space-4);
+    padding-block: var(--space-section);
+  }
+
+  .swatches {
+    display: grid;
+    gap: var(--space-4);
+    padding: 0;
+    list-style: none;
+  }
+
+  .swatch {
+    display: grid;
+    grid-template-columns: 3rem 1fr;
+    gap: 0 var(--space-4);
+    align-items: center;
+    font-size: var(--step--1);
+  }
+
+  .swatch__chip {
+    grid-row: span 3;
+    width: 3rem;
+    height: 3rem;
+    border: var(--border);
+    border-radius: var(--radius);
+  }
+
+  .type {
+    display: grid;
+    border-bottom: var(--border);
+  }
+
+  .type__row {
+    display: grid;
+    gap: var(--space-2);
+    padding-block: var(--space-4);
+    border-top: var(--border);
+  }
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    align-items: center;
+  }
+
+  .note {
+    margin-top: var(--space-4);
+    font-size: var(--step--1);
+  }
+
+  @media (min-width: 48rem) {
+    .swatches {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .type__row {
+      grid-template-columns: 8rem 1fr;
+      align-items: baseline;
+    }
+  }
+</style>

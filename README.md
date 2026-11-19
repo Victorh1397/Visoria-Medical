@@ -12,7 +12,7 @@ desplegado en Cloudflare Workers.
 
 ```bash
 npm install       # dependencias
-npm run dev       # servidor de desarrollo en http://localhost:4321 (recarga en vivo)
+npm run dev       # servidor de desarrollo en http://localhost:4330 (recarga en vivo)
 npm run check     # tipos de Astro + tipos del Worker
 npm run build     # genera dist/
 npm run preview   # build + wrangler dev: sitio y Worker como en producción, en http://localhost:8787

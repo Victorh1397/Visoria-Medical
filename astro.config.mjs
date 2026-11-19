@@ -8,6 +8,8 @@ export default defineConfig({
   site,
   output: 'static',
   trailingSlash: 'ignore',
+  // Puerto fijo para no chocar con el portfolio (que usa el 4321 por defecto).
+  server: { port: 4330 },
   build: {
     format: 'directory',
   },

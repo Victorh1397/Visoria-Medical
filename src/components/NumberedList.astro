@@ -1,0 +1,71 @@
+---
+/**
+ * Lista numerada en filas separadas por líneas finas. Sustituye a los grids de tarjetas
+ * (constitution P2). Numeración en mono con dos dígitos.
+ */
+interface Item {
+  title: string;
+  text: string;
+}
+
+interface Props {
+  items: Item[];
+}
+
+const { items } = Astro.props;
+const pad = (n: number) => String(n).padStart(2, '0');
+---
+
+<ol class="nlist">
+  {
+    items.map((item, i) => (
+      <li class="nlist__row">
+        <span class="nlist__n" aria-hidden="true">
+          {pad(i + 1)}
+        </span>
+        <h3 class="nlist__title">{item.title}</h3>
+        <p class="nlist__text muted">{item.text}</p>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .nlist {
+    padding: 0;
+    list-style: none;
+    border-bottom: var(--border);
+  }
+
+  .nlist__row {
+    display: grid;
+    grid-template-columns: 3rem 1fr;
+    gap: var(--space-2) var(--space-4);
+    padding-block: var(--space-5);
+    border-top: var(--border);
+  }
+
+  .nlist__n {
+    grid-row: span 2;
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    font-weight: 500;
+    color: var(--c-accent);
+    line-height: 1.9;
+  }
+
+  .nlist__title {
+    font-size: var(--step-1);
+  }
+
+  @media (min-width: 48rem) {
+    .nlist__row {
+      grid-template-columns: 4rem minmax(12rem, 1fr) 2fr;
+      align-items: baseline;
+    }
+
+    .nlist__n {
+      grid-row: auto;
+    }
+  }
+</style>

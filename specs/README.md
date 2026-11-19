@@ -44,7 +44,7 @@ producción.
 |---|---|---|
 | [000 Constitution](000-constitution.md) | vigente | — |
 | [001 Foundation](001-foundation/spec.md) | done | — |
-| [002 Design system](002-design-system/spec.md) | approved | logo SVG |
+| [002 Design system](002-design-system/spec.md) | done | — (logo en PNG hasta tener SVG) |
 | [003 Home](003-home/spec.md) | approved | funciones, capturas, datos de seguridad |
 | [004 Formulario de demo](004-demo-form/spec.md) | approved | — (se activa con 007) |
 | [005 Páginas legales](005-legal/spec.md) | approved | revisión de un abogado antes de publicar |
@@ -56,7 +56,7 @@ producción.
 
 ## Insumos pendientes de Victor
 
-- [ ] Logo en SVG (y PNG de respaldo), con el hex exacto del morado si se conoce.
+- [ ] Logo en SVG (hoy se usa el PNG; el color #4A0361 ya está extraído).
 - [ ] Nombre del dominio.
 - [ ] Email público de contacto y dirección donde recibir las solicitudes de demo (`DEMO_INBOX`).
 - [ ] Lista de funciones reales (máximo 5 para la v1) con una frase sobre el problema que resuelve cada una.

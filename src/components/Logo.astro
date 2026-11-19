@@ -1,0 +1,24 @@
+---
+/**
+ * Logo de Visoria Medical. Hoy es un PNG recortado y con fondo transparente, generado desde
+ * medical.png; cuando exista el SVG oficial se sustituye aquí y en ningún otro sitio (spec 002).
+ */
+import { Image } from 'astro:assets';
+import logo from '@/assets/brand/visoria-medical.png';
+
+interface Props {
+  height?: number;
+  eager?: boolean;
+}
+
+const { height = 36, eager = false } = Astro.props;
+---
+
+<Image
+  src={logo}
+  alt="Visoria Medical"
+  height={height}
+  densities={[1, 2]}
+  loading={eager ? 'eager' : 'lazy'}
+  decoding="async"
+/>

@@ -31,7 +31,7 @@ Este repositorio sigue el flujo de [specs/README.md](specs/README.md):
 Me detengo y no sigo con la siguiente spec hasta tener respuesta.
 
 1. Ejecuto `npm run check`, `npm run build` y la sección Verificación de la spec.
-2. Dejo `npm run dev` corriendo en segundo plano y paso la URL local (http://localhost:4321) con lo que conviene
+2. Dejo `npm run dev` corriendo en segundo plano y paso la URL local (http://localhost:4330) con lo que conviene
    mirar.
 3. Escribo el resumen en la sección **Cierre** de la spec y lo repito en el chat:
    - **Qué se hizo**, tarea por tarea.
