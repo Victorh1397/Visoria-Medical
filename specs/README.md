@@ -43,7 +43,7 @@ producción.
 | Spec | Estado | Bloqueos |
 |---|---|---|
 | [000 Constitution](000-constitution.md) | vigente | — |
-| [001 Foundation](001-foundation/spec.md) | approved | — |
+| [001 Foundation](001-foundation/spec.md) | done | — |
 | [002 Design system](002-design-system/spec.md) | approved | logo SVG |
 | [003 Home](003-home/spec.md) | approved | funciones, capturas, datos de seguridad |
 | [004 Formulario de demo](004-demo-form/spec.md) | approved | — (se activa con 007) |

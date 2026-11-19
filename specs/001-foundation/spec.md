@@ -1,6 +1,6 @@
 # 001 — Foundation
 
-- **Estado:** approved
+- **Estado:** done
 - **Fecha:** 2026-11-19
 - **Depende de:** 000
 
@@ -62,21 +62,50 @@ specs/
 
 ## Tareas
 
-- [ ] T1 Inicializar Astro 7 con TypeScript `strict`, `.nvmrc` y `engines` (R1, R2, R6)
-- [ ] T2 Crear la estructura de carpetas con `index.astro` y `404.astro` mínimas (R1, R5)
-- [ ] T3 Añadir `wrangler.jsonc` y `worker/index.ts` con `run_worker_first` para `/api/*` (R3, R4)
-- [ ] T4 Scripts `dev`, `build`, `check`, `preview` (build + `wrangler dev`) (R2, R3)
-- [ ] T5 `README.md` mínimo del proyecto y comprobación del remote `origin` →
+- [x] T1 Inicializar Astro 7 con TypeScript `strict`, `.nvmrc` y `engines` (R1, R2, R6)
+- [x] T2 Crear la estructura de carpetas con `index.astro` y `404.astro` mínimas (R1, R5)
+- [x] T3 Añadir `wrangler.jsonc` y `worker/index.ts` con `run_worker_first` para `/api/*` (R3, R4)
+- [x] T4 Scripts `dev`, `build`, `check`, `preview` (build + `wrangler dev`) (R2, R3)
+- [x] T5 `README.md` mínimo del proyecto y comprobación del remote `origin` →
       `https://github.com/Victorh1397/Visoria-Medical.git` (R7)
 
 ## Verificación
 
-- [ ] `npm run check && npm run build` termina sin errores ni warnings.
-- [ ] `npm run preview`: `/` responde 200, `/no-existe` responde 404 con la página propia, `/api/x` responde 404
+- [x] `npm run check && npm run build` termina sin errores ni warnings.
+- [x] `npm run preview`: `/` responde 200, `/no-existe` responde 404 con la página propia, `/api/x` responde 404
       desde el Worker (cabecera o cuerpo distinguible).
-- [ ] `git remote -v` apunta a `Victorh1397/Visoria-Medical` y, tras el commit de cierre, `main` se ve en GitHub.
+- [x] `git remote -v` apunta a `Victorh1397/Visoria-Medical` y, tras el commit de cierre, `main` se ve en GitHub.
 
 ## Hallazgos
 
+- **TypeScript 6 y no 7:** `typescript@7` ya está publicado, pero `@astrojs/check` está probado con la 6. Se fija
+  `^6.0.3`, igual que en el portfolio.
+- **Tipos del Worker separados:** `worker/` queda fuera del `tsconfig` de Astro y tiene el suyo con
+  `@cloudflare/workers-types`. `npm run check` ejecuta los dos (`astro check && tsc -p worker/tsconfig.json`).
+- **Finales de línea:** git avisaba de conversiones LF→CRLF en Windows. Se añaden `.gitattributes` (`eol=lf`) y
+  `.editorconfig`.
+- **Sin `public/.gitkeep`:** se copiaba a `dist/` y quedaba publicado. `public/` recibirá archivos reales en la 002.
+- **Dos servidores locales:** `npm run dev` (Astro, puerto 4321, recarga en vivo) para trabajar en el diseño, y
+  `npm run preview` (wrangler, puerto 8787) para probar el Worker y el 404 real como en producción. El servidor de
+  Astro no sirve la 404 con el comportamiento exacto de Cloudflare.
+
 ## Cierre
+
+- **Qué se hizo:**
+  - T1: Astro 7.4 con TypeScript `strict`, Node 24 en `.nvmrc` y `engines`.
+  - T2: `src/{pages,components,layouts,content,styles}`, `index.astro` y `404.astro` mínimas, sin estilos.
+  - T3: `wrangler.jsonc` (static assets, `404-page`, `run_worker_first: ["/api/*"]`) y `worker/index.ts`, que
+    responde `404 {"error":"not_found"}` con la cabecera `x-visoria-worker: 1`.
+  - T4: scripts `dev`, `build`, `check`, `preview` y `deploy`.
+  - T5: `README.md` y remote `origin` → `Victorh1397/Visoria-Medical`.
+- **Verificación ejecutada:** check (0 errores, 0 warnings), build (2 páginas). En `wrangler dev`: `/` → 200,
+  `/no-existe` → 404 con la página propia, `/api/x` → 404 JSON desde el Worker.
+- **Archivos:** `package.json`, `package-lock.json`, `.nvmrc`, `.gitignore`, `.gitattributes`, `.editorconfig`,
+  `.vscode/extensions.json`, `tsconfig.json`, `astro.config.mjs`, `wrangler.jsonc`, `worker/index.ts`,
+  `worker/tsconfig.json`, `src/pages/index.astro`, `src/pages/404.astro`, `src/*/.gitkeep`, `README.md`,
+  `specs/001-foundation/spec.md`, `specs/README.md`.
+- **Cómo verlo en local:** `npm run dev` → http://localhost:4321 (página en blanco con título; aún sin diseño).
+  Para el Worker: `npm run preview` → http://localhost:8787/api/x y http://localhost:8787/no-existe.
+- **Cambios de Victor:** —
+- **Commit:** `feat(001): foundation`. Aprobado el 2026-11-19.
 

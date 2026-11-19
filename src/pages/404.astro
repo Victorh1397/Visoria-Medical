@@ -1,0 +1,21 @@
+---
+// Página 404 propia (spec 001 R5). Cloudflare la sirve con estado 404 gracias a
+// `not_found_handling: "404-page"` en wrangler.jsonc.
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Página no encontrada · Visoria Medical</title>
+  </head>
+  <body>
+    <main>
+      <h1>Página no encontrada</h1>
+      <p>La dirección que buscó no existe o cambió de lugar.</p>
+      <p><a href="/">Volver al inicio</a></p>
+    </main>
+  </body>
+</html>
