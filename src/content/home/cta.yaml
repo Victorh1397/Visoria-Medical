@@ -1,0 +1,4 @@
+# Cierre de la home (spec 003 R1). El botón siempre es "Solicitar demo" (src/config/site.ts).
+cta:
+  title: Vea Visoria Medical funcionando antes de decidir
+  text: Le mostramos el sistema en una demo y resolvemos sus dudas.

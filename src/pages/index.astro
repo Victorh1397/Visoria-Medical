@@ -1,29 +1,17 @@
 ---
-// Portada provisional con el design system (spec 002). El hero y las secciones reales llegan con la spec 003.
+// Home de Visoria Medical (spec 003). El orden de las secciones lo fija la spec (R1).
 import Base from '@/layouts/Base.astro';
-import Button from '@/components/Button.astro';
-import { site } from '@/config/site';
+import Hero from '@/components/home/Hero.astro';
+import Features from '@/components/home/Features.astro';
+import Security from '@/components/home/Security.astro';
+import Faq from '@/components/home/Faq.astro';
+import FinalCta from '@/components/home/FinalCta.astro';
 ---
 
 <Base>
-  <div class="container intro">
-    <p class="label">Para consultorios y clínicas</p>
-    <h1>{site.name}</h1>
-    <p class="muted measure">Historias clínicas para consultorios y clínicas. Sitio en construcción.</p>
-    <div class="intro__actions">
-      <Button href={site.cta.href}>{site.cta.label}</Button>
-    </div>
-  </div>
+  <Hero />
+  <Features />
+  <Security />
+  <Faq />
+  <FinalCta />
 </Base>
-
-<style>
-  .intro {
-    display: grid;
-    gap: var(--space-4);
-    padding-block: var(--space-section);
-  }
-
-  .intro__actions {
-    margin-top: var(--space-3);
-  }
-</style>

@@ -1,0 +1,90 @@
+---
+import { getEntry } from 'astro:content';
+import Section from '@/components/Section.astro';
+import Annotated from '@/components/Annotated.astro';
+import { resolveScreen } from '@/lib/screens';
+
+const features = await getEntry('features', 'features');
+if (!features) throw new Error('Falta src/content/home/features.yaml');
+const { label, title, items } = features.data;
+const pad = (n: number) => String(n).padStart(2, '0');
+---
+
+<Section id="funciones" index="01" label={label} title={title}>
+  <ol class="features">
+    {
+      items.map((item, i) => (
+        <li class="feature">
+          <div class="feature__copy">
+            <span class="feature__n" aria-hidden="true">
+              {pad(i + 1)}
+            </span>
+            <h3>{item.title}</h3>
+            <p class="muted">{item.text}</p>
+          </div>
+          <div class="feature__media">
+            <Annotated
+              image={resolveScreen(item.screenshot.src)}
+              alt={item.screenshot.alt}
+              annotations={item.screenshot.annotations}
+            />
+          </div>
+        </li>
+      ))
+    }
+  </ol>
+</Section>
+
+<style>
+  .features {
+    padding: 0;
+    list-style: none;
+  }
+
+  .feature {
+    display: grid;
+    gap: var(--space-5);
+    padding-block: var(--space-7);
+    border-top: var(--border);
+  }
+
+  .feature:first-child {
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  .feature:last-child {
+    padding-bottom: 0;
+  }
+
+  .feature__copy {
+    display: grid;
+    gap: var(--space-3);
+    align-content: start;
+    max-width: 40ch;
+  }
+
+  .feature__n {
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    font-weight: 500;
+    color: var(--c-accent);
+  }
+
+  @media (min-width: 60rem) {
+    .feature {
+      grid-template-columns: 5fr 7fr;
+      gap: var(--space-7);
+      align-items: center;
+    }
+
+    /* Alterna texto y captura a izquierda y derecha; la captura conserva la columna ancha. */
+    .feature:nth-child(even) {
+      grid-template-columns: 7fr 5fr;
+    }
+
+    .feature:nth-child(even) .feature__copy {
+      order: 2;
+    }
+  }
+</style>

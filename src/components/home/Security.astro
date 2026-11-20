@@ -1,0 +1,52 @@
+---
+import { getEntry } from 'astro:content';
+import Section from '@/components/Section.astro';
+
+const security = await getEntry('security', 'security');
+if (!security) throw new Error('Falta src/content/home/security.yaml');
+const { label, title, intro, items } = security.data;
+---
+
+<Section id="seguridad" index="02" label={label} title={title}>
+  <p class="intro muted">{intro}</p>
+  <dl class="measures">
+    {
+      items.map((item) => (
+        <div class="measure">
+          <dt>{item.measure}</dt>
+          <dd class="muted">{item.detail}</dd>
+        </div>
+      ))
+    }
+  </dl>
+</Section>
+
+<style>
+  .intro {
+    max-width: var(--measure);
+    margin-top: calc(-1 * var(--space-5));
+    margin-bottom: var(--space-6);
+  }
+
+  .measures {
+    border-bottom: var(--border);
+  }
+
+  .measure {
+    display: grid;
+    gap: var(--space-1) var(--space-6);
+    padding-block: var(--space-5);
+    border-top: var(--border);
+  }
+
+  .measure dt {
+    font-weight: 600;
+  }
+
+  @media (min-width: 48rem) {
+    .measure {
+      grid-template-columns: minmax(12rem, 1fr) 2fr;
+      align-items: baseline;
+    }
+  }
+</style>

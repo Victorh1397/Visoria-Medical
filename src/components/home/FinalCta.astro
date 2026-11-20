@@ -1,0 +1,49 @@
+---
+import { getEntry } from 'astro:content';
+import Button from '@/components/Button.astro';
+import { site } from '@/config/site';
+
+const cta = await getEntry('cta', 'cta');
+if (!cta) throw new Error('Falta src/content/home/cta.yaml');
+const { title, text } = cta.data;
+---
+
+<section class="final" aria-labelledby="cierre-titulo">
+  <div class="container final__inner">
+    <div class="final__copy">
+      <h2 id="cierre-titulo">{title}</h2>
+      <p class="muted">{text}</p>
+    </div>
+    <Button href={site.cta.href}>{site.cta.label}</Button>
+  </div>
+</section>
+
+<style>
+  .final {
+    padding-top: var(--space-section);
+    border-top: var(--border);
+  }
+
+  .final__inner {
+    display: grid;
+    gap: var(--space-5);
+    justify-items: start;
+  }
+
+  .final__copy {
+    display: grid;
+    gap: var(--space-3);
+    max-width: 36ch;
+  }
+
+  @media (min-width: 48rem) {
+    .final__inner {
+      grid-template-columns: 1fr auto;
+      align-items: end;
+    }
+
+    .final__copy {
+      max-width: 44ch;
+    }
+  }
+</style>

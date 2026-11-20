@@ -45,7 +45,7 @@ producción.
 | [000 Constitution](000-constitution.md) | vigente | — |
 | [001 Foundation](001-foundation/spec.md) | done | — |
 | [002 Design system](002-design-system/spec.md) | done | — (logo en PNG hasta tener SVG) |
-| [003 Home](003-home/spec.md) | approved | funciones, capturas, datos de seguridad |
+| [003 Home](003-home/spec.md) | in-progress (faltan capturas) | capturas |
 | [004 Formulario de demo](004-demo-form/spec.md) | approved | — (se activa con 007) |
 | [005 Páginas legales](005-legal/spec.md) | approved | revisión de un abogado antes de publicar |
 | [006 SEO y analítica](006-seo-analytics/spec.md) | approved | — |

@@ -1,0 +1,68 @@
+---
+import { getEntry } from 'astro:content';
+import Section from '@/components/Section.astro';
+
+const faq = await getEntry('faq', 'faq');
+if (!faq) throw new Error('Falta src/content/home/faq.yaml');
+const { label, title, items } = faq.data;
+---
+
+<Section id="preguntas" index="03" label={label} title={title}>
+  <div class="faq">
+    {
+      items.map((item) => (
+        <details class="faq__item">
+          <summary>{item.q}</summary>
+          <p class="muted">{item.a}</p>
+        </details>
+      ))
+    }
+  </div>
+</Section>
+
+<style>
+  .faq {
+    max-width: 52rem;
+    border-bottom: var(--border);
+  }
+
+  .faq__item {
+    border-top: var(--border);
+  }
+
+  .faq__item summary {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-5);
+    padding-block: var(--space-5);
+    font-size: var(--step-1);
+    font-weight: 500;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .faq__item summary::-webkit-details-marker {
+    display: none;
+  }
+
+  /* Indicador en mono, sin librería de iconos. */
+  .faq__item summary::after {
+    content: '+';
+    flex: none;
+    font-family: var(--font-mono);
+    color: var(--c-accent);
+  }
+
+  .faq__item[open] summary::after {
+    content: '−';
+  }
+
+  .faq__item summary:hover {
+    color: var(--c-accent);
+  }
+
+  .faq__item p {
+    max-width: var(--measure);
+    padding-bottom: var(--space-5);
+  }
+</style>

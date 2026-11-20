@@ -1,0 +1,85 @@
+---
+import { getEntry } from 'astro:content';
+import Annotated from '@/components/Annotated.astro';
+import Button from '@/components/Button.astro';
+import { site } from '@/config/site';
+import { resolveScreen } from '@/lib/screens';
+
+const hero = await getEntry('hero', 'hero');
+if (!hero) throw new Error('Falta src/content/home/hero.yaml');
+const { eyebrow, title, lead, secondary, screenshot } = hero.data;
+---
+
+<section class="hero" aria-labelledby="hero-titulo">
+  <div class="container hero__grid">
+    <div class="hero__copy">
+      <p class="label">{eyebrow}</p>
+      <h1 id="hero-titulo">{title}</h1>
+      <p class="hero__lead muted">{lead}</p>
+      <div class="hero__actions">
+        <Button href={site.cta.href}>{site.cta.label}</Button>
+        <a href={secondary.href} class="hero__secondary">{secondary.label} <span aria-hidden="true">↓</span></a>
+      </div>
+    </div>
+    <div class="hero__media">
+      <Annotated
+        image={resolveScreen(screenshot.src)}
+        alt={screenshot.alt}
+        annotations={screenshot.annotations}
+        priority
+      />
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding-block: var(--space-6) var(--space-7);
+  }
+
+  .hero__grid {
+    display: grid;
+    gap: var(--space-6);
+    align-items: center;
+  }
+
+  .hero__copy {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .hero__lead {
+    max-width: 44ch;
+    font-size: var(--step-1);
+    line-height: var(--leading-snug);
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3) var(--space-5);
+    margin-top: var(--space-2);
+  }
+
+  .hero__secondary {
+    font-weight: 500;
+  }
+
+  @media (max-width: 47.99rem) {
+    .hero__lead {
+      font-size: var(--step-0);
+    }
+  }
+
+  @media (min-width: 60rem) {
+    .hero {
+      padding-block: var(--space-8);
+    }
+
+    .hero__grid {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-7);
+    }
+  }
+</style>

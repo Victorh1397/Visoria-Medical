@@ -10,6 +10,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "check": "astro check && tsc -p worker/tsconfig.json",
+    "check:content": "node scripts/check-content.mjs",
     "preview": "astro build && wrangler dev",
     "deploy": "astro build && wrangler deploy",
     "astro": "astro"

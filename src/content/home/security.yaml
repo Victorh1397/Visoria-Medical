@@ -1,0 +1,15 @@
+# Seguridad y privacidad (spec 003 R4). Solo medidas reales, confirmadas por Victor el 2026-11-19.
+# PENDIENTE (no publicado): detallar el cifrado (en tránsito, en reposo, tipo) y el proveedor/región
+# donde se alojan los datos. Registro de auditoría: no confirmado, no se menciona.
+security:
+  label: Seguridad y privacidad
+  title: Cómo se protegen los datos de sus pacientes
+  intro: >-
+    Usted custodia información sensible. Estas son las medidas con las que Visoria Medical la protege.
+  items:
+    - measure: Cifrado
+      detail: La información clínica de sus pacientes está protegida con cifrado.
+    - measure: Copias de seguridad
+      detail: Se hacen respaldos automáticos en la nube.
+    - measure: Acceso por roles
+      detail: Cada usuario accede solo a la información que su rol le permite.

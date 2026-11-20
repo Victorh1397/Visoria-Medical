@@ -1,0 +1,19 @@
+# Preguntas frecuentes (spec 003 R5). Solo se publican las que tienen respuesta confirmada.
+# PENDIENTE (no publicado): ¿Dónde se almacenan los datos de mis pacientes?
+# PENDIENTE (no publicado): ¿Funciona sin conexión a internet?
+# PENDIENTE (no publicado): ¿Puedo migrar historias que ya tengo en papel o en Excel?
+# PENDIENTE (no publicado): ¿Puedo exportar mis datos si dejo de usar Visoria?
+# PENDIENTE (no publicado): ¿Cuánto cuesta?
+faq:
+  label: Preguntas frecuentes
+  title: Preguntas frecuentes
+  items:
+    - q: ¿En qué dispositivos se usa?
+      a: En computadora, tablet y teléfono.
+    - q: ¿Quién puede ver cada historia clínica?
+      a: >-
+        Solo los usuarios de su consultorio que tienen permiso. Cada usuario accede a la información que su
+        rol le permite.
+    - q: ¿Qué pasa si se pierde o se daña un equipo?
+      a: >-
+        La información no depende del equipo: Visoria Medical hace respaldos automáticos en la nube.

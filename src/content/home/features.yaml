@@ -1,0 +1,37 @@
+# Funciones (spec 003 R3). Solo funciones que existen hoy en la app (constitution P1),
+# confirmadas por Victor el 2026-11-19. Máximo 5.
+# Capturas: nombre de archivo en src/assets/screens/, o la marca de pendiente mientras no exista. Siempre con pacientes ficticios.
+# Anotaciones (opcionales): x/y en % sobre la captura, p. ej. { x: 20, y: 30, label: Alergias, text: siempre visibles }
+features:
+  label: Funciones
+  title: Qué hace Visoria Medical
+  items:
+    - title: Historia clínica
+      text: >-
+        Registre, consulte y actualice la historia clínica de cada paciente. Lo que se anota en cada
+        consulta queda en el mismo expediente.
+      screenshot:
+        src: PENDIENTE
+        alt: Historia clínica de un paciente ficticio en Visoria Medical
+
+    - title: Registro de pacientes
+      text: >-
+        Los datos personales y médicos de cada paciente, en una sola ficha. Sin carpetas de papel ni hojas
+        de cálculo sueltas.
+      screenshot:
+        src: PENDIENTE
+        alt: Ficha de registro de un paciente ficticio
+
+    - title: Agenda de citas
+      text: >-
+        Programe, reprograme y consulte las citas del consultorio en un calendario.
+      screenshot:
+        src: PENDIENTE
+        alt: Calendario de citas del consultorio con pacientes ficticios
+
+    - title: Reportes y estadísticas
+      text: >-
+        Genere reportes y consulte las estadísticas de actividad del consultorio.
+      screenshot:
+        src: PENDIENTE
+        alt: Pantalla de reportes y estadísticas con datos ficticios

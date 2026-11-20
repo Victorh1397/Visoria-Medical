@@ -1,0 +1,13 @@
+# Hero de la home (spec 003 R2). El título admite 10 palabras como máximo.
+hero:
+  eyebrow: Para consultorios y clínicas
+  title: Historia clínica, pacientes y agenda en un mismo sistema
+  lead: >-
+    Visoria Medical reúne la ficha de cada paciente, su historia clínica, las citas del consultorio y
+    los reportes de actividad. Funciona en computadora, tablet y teléfono.
+  secondary:
+    label: Ver funciones
+    href: '#funciones'
+  screenshot:
+    src: PENDIENTE
+    alt: Vista general de Visoria Medical con la ficha de un paciente ficticio
