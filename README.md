@@ -18,6 +18,7 @@ npm run check:content  # falla si queda algún PENDIENTE visible (capturas, emai
 npm test          # tests del Worker dentro de workerd (vitest + @cloudflare/vitest-plugin)
 npm run og        # regenera public/og.png (imagen para compartir) con Chrome headless
 npm run build     # genera dist/
+npm run ci        # check + check:content + test + build: lo que ejecuta Cloudflare antes de desplegar
 npm run preview   # build + wrangler dev: sitio y Worker como en producción, en http://localhost:8787
 npm run preview:form  # igual, con el formulario de demo activo y claves de prueba de Turnstile
 npm run deploy    # build + despliegue manual con wrangler (normalmente lo hace Workers Builds)

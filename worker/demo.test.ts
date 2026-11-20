@@ -177,6 +177,15 @@ describe('router del Worker', () => {
     expect(res.headers.get('allow')).toBe('POST');
   });
 
+  it('todas las respuestas de /api llevan cabeceras de seguridad (spec 007 R5)', async () => {
+    for (const path of ['/api/demo', '/api/otra']) {
+      const res = await SELF.fetch(`https://visoria.test${path}`);
+      expect(res.headers.get('x-content-type-options')).toBe('nosniff');
+      expect(res.headers.get('strict-transport-security')).toContain('max-age=31536000');
+      expect(res.headers.get('content-security-policy')).toContain("default-src 'none'");
+    }
+  });
+
   it('otra ruta de /api → 404 JSON', async () => {
     const res = await SELF.fetch('https://visoria.test/api/otra');
     expect(res.status).toBe(404);

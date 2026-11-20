@@ -17,6 +17,11 @@ export default defineConfig({
   build: {
     format: 'directory',
   },
+  // Scripts siempre como archivo externo (nunca incrustados en el HTML), para que la CSP no necesite
+  // 'unsafe-inline' en script-src (spec 007 R5).
+  vite: {
+    build: { assetsInlineLimit: 0 },
+  },
   integrations: [
     sitemap({
       filter: (page) => !NOT_IN_SITEMAP.some((path) => new URL(page).pathname.replace(/\/$/, '') === path),

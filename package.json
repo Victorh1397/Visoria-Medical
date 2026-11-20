@@ -12,6 +12,7 @@
     "check": "astro check && tsc -p worker/tsconfig.json",
     "check:content": "node scripts/check-content.mjs",
     "test": "vitest run",
+    "ci": "npm run check && npm run check:content && npm test && npm run build",
     "og": "node scripts/og.mjs",
     "preview": "astro build && wrangler dev",
     "preview:form": "astro build --mode formtest && wrangler dev --var FORM_ENABLED:true --var DEMO_INBOX:inbox@example.com --var DEMO_FROM:demo@example.com --var TURNSTILE_SECRET:1x0000000000000000000000000000000AA",

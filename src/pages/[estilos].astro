@@ -117,10 +117,10 @@ const annotations = [
   </Section>
 </Base>
 
-<script>
-  // Muestra el valor real de cada token (solo en esta página de desarrollo).
+<script is:inline>
+  // Muestra el valor real de cada token. is:inline: esta página solo existe en desarrollo y así su JS no acaba en dist/.
   const styles = getComputedStyle(document.documentElement);
-  document.querySelectorAll<HTMLElement>('[data-token]').forEach((el) => {
+  document.querySelectorAll('[data-token]').forEach((el) => {
     el.textContent = styles.getPropertyValue(el.dataset.token ?? '').trim();
   });
 </script>
