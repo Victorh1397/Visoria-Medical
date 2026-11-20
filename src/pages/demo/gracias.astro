@@ -1,0 +1,25 @@
+---
+// Confirmación tras un envío sin JS (spec 004 R7). Fuera del sitemap y sin indexar (spec 006).
+import { getEntry } from 'astro:content';
+import Base from '@/layouts/Base.astro';
+
+const entry = await getEntry('demo', 'demo');
+if (!entry) throw new Error('Falta src/content/demo/demo.yaml');
+---
+
+<Base title="Solicitud recibida" noindex>
+  <div class="container message">
+    <p class="label">Demo</p>
+    <h1>Solicitud recibida</h1>
+    <p class="muted measure">{entry.data.success}</p>
+    <p><a href="/">Volver al inicio</a></p>
+  </div>
+</Base>
+
+<style>
+  .message {
+    display: grid;
+    gap: var(--space-4);
+    padding-block: var(--space-section) 0;
+  }
+</style>

@@ -34,6 +34,13 @@ for await (const file of walk(rootPath)) {
   });
 }
 
+// El email de contacto vive en src/config/site.ts y lo usan /demo (mailto) y el pie (spec 004 R8, R10).
+const siteTs = await readFile(new URL('../src/config/site.ts', import.meta.url), 'utf8');
+const contact = siteTs.match(/contactEmail:\s*'([^']*)'/);
+if (!contact || contact[1].trim() === '') {
+  errors.push('src/config/site.ts  contactEmail vacío: /demo muestra un PENDIENTE en lugar del email');
+}
+
 if (warnings.length) {
   console.log(`\nAvisos: ${warnings.length} pendiente(s) sin publicar (comentados):`);
   for (const w of warnings) console.log(`  · ${w}`);

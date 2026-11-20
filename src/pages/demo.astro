@@ -1,0 +1,170 @@
+---
+/**
+ * /demo (spec 004). Con FORM_ENABLED=true muestra el formulario y carga Turnstile (solo aquí);
+ * si no, un enlace de email con asunto prellenado (R10).
+ */
+import { getEntry } from 'astro:content';
+import { FORM_ENABLED, TURNSTILE_SITE_KEY } from 'astro:env/server';
+import Base from '@/layouts/Base.astro';
+import DemoForm from '@/components/DemoForm.astro';
+import { site } from '@/config/site';
+
+const entry = await getEntry('demo', 'demo');
+if (!entry) throw new Error('Falta src/content/demo/demo.yaml');
+const t = entry.data;
+
+const mailto = site.contactEmail
+  ? `mailto:${site.contactEmail}?subject=${encodeURIComponent('Solicitud de demo de Visoria Medical')}`
+  : '';
+---
+
+<Base title="Solicitar demo" description={t.intro}>
+  {FORM_ENABLED && <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer />}
+
+  <div class="container demo">
+    <div class="demo__intro">
+      <p class="label">Demo</p>
+      <h1>{t.title}</h1>
+      <p class="muted">{t.intro}</p>
+      <h2 class="demo__subtitle">{t.includesTitle}</h2>
+      <ol class="demo__list">
+        {t.includes.map((item) => <li>{item}</li>)}
+      </ol>
+    </div>
+
+    <div class="demo__panel">
+      {
+        FORM_ENABLED ? (
+          <>
+            <noscript>
+              <p class="demo__notice">
+                {t.noscript}{' '}
+                {mailto ? <a href={mailto}>Escríbanos a {site.contactEmail}</a> : <span class="label">Email PENDIENTE</span>}
+              </p>
+            </noscript>
+            <DemoForm
+              siteKey={TURNSTILE_SITE_KEY}
+              messageHint={t.messageHint}
+              success={t.success}
+              rejected={t.rejected}
+              sendFailed={t.sendFailed}
+              contactEmail={site.contactEmail}
+            />
+          </>
+        ) : (
+          <div class="demo__fallback">
+            <h2>{t.disabledTitle}</h2>
+            <p class="muted">{t.disabledText}</p>
+            {mailto ? (
+              <a class="demo__mail" href={mailto}>
+                {site.contactEmail}
+              </a>
+            ) : (
+              <p class="demo__pending">
+                <span class="label">Pendiente · email de contacto</span>
+              </p>
+            )}
+          </div>
+        )
+      }
+    </div>
+  </div>
+</Base>
+
+<script>
+  import '@/scripts/demo-form';
+</script>
+
+<style>
+  .demo {
+    display: grid;
+    gap: var(--space-7);
+    padding-block: var(--space-7) 0;
+  }
+
+  .demo__intro {
+    display: grid;
+    gap: var(--space-4);
+    align-content: start;
+    max-width: 34rem;
+  }
+
+  .demo__subtitle {
+    margin-top: var(--space-4);
+    font-size: var(--step-1);
+    letter-spacing: 0;
+  }
+
+  .demo__list {
+    display: grid;
+    padding: 0;
+    list-style: none;
+    counter-reset: item;
+    border-bottom: var(--border);
+  }
+
+  .demo__list li {
+    display: grid;
+    grid-template-columns: 2.5rem 1fr;
+    padding-block: var(--space-3);
+    border-top: var(--border);
+    counter-increment: item;
+  }
+
+  .demo__list li::before {
+    content: counter(item, decimal-leading-zero);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    font-weight: 500;
+    color: var(--c-accent);
+    line-height: 1.9;
+  }
+
+  .demo__panel {
+    padding-top: var(--space-6);
+    border-top: var(--border);
+  }
+
+  .demo__fallback {
+    display: grid;
+    gap: var(--space-4);
+    max-width: 34rem;
+  }
+
+  .demo__fallback h2 {
+    font-size: var(--step-3);
+  }
+
+  .demo__mail {
+    font-size: var(--step-2);
+    font-weight: 500;
+  }
+
+  .demo__pending {
+    padding: var(--space-4);
+    background: var(--c-placeholder);
+    border-radius: var(--radius);
+  }
+
+  .demo__notice {
+    margin-bottom: var(--space-5);
+    padding: var(--space-4);
+    border: var(--border);
+    border-radius: var(--radius);
+  }
+
+  @media (min-width: 60rem) {
+    .demo {
+      grid-template-columns: 5fr 7fr;
+      gap: var(--space-8);
+      padding-top: var(--space-8);
+    }
+
+    .demo__panel {
+      padding-top: 0;
+      padding-left: var(--space-7);
+      border-top: 0;
+      border-left: var(--border);
+    }
+  }
+</style>

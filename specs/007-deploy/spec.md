@@ -50,7 +50,9 @@ con **[Victor]**.
 3. Asociar el dominio como Custom Domain del Worker.
 4. [Victor] Activar Email Routing y verificar la dirección de destino `DEMO_INBOX`.
 5. [Victor] Crear el widget de Turnstile para el dominio; guardar el secreto.
-6. Poner `FORM_ENABLED=true` y desplegar.
+6. Poner `FORM_ENABLED=true` **en dos sitios**: variable de build de Workers Builds (la lee Astro al generar `/demo`) y
+   `vars` de `wrangler.jsonc` (la lee el Worker). Rellenar también `DEMO_INBOX`, `DEMO_FROM` y `TURNSTILE_SITE_KEY`
+   (build) con los valores reales, y desplegar. Ver Hallazgos de la spec 004.
 
 **Archivos afectados:**
 

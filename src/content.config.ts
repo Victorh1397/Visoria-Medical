@@ -73,4 +73,23 @@ const cta = defineCollection({
   }),
 });
 
-export const collections = { hero, features, security, faq, cta };
+const demo = defineCollection({
+  loader: file('src/content/demo/demo.yaml'),
+  schema: z.object({
+    title: z.string(),
+    intro: z.string(),
+    includesTitle: z.string(),
+    includes: z.array(z.string()).min(1),
+    messageHint: z.string(),
+    success: z.string(),
+    rejected: z.string(),
+    sendFailed: z.string(),
+    disabledTitle: z.string(),
+    disabledText: z.string(),
+    noscript: z.string(),
+    errorTitle: z.string(),
+    errorText: z.string(),
+  }),
+});
+
+export const collections = { hero, features, security, faq, cta, demo };

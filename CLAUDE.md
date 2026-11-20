@@ -57,5 +57,15 @@ Me detengo y no sigo con la siguiente spec hasta tener respuesta.
 
 ## Comandos
 
-Se completan al implementar la spec 001. Previstos: `npm run dev`, `npm run check`, `npm run check:content`,
-`npm run build`, `npm run preview`.
+```bash
+npm run dev            # http://localhost:4330, recarga en vivo (sin Worker)
+npm run check          # tipos de Astro + Worker
+npm run check:content  # PENDIENTE visibles → falla (bloquea producción)
+npm test               # tests del Worker en workerd
+npm run build          # dist/
+npm run preview        # build + wrangler dev en http://localhost:8787 (sitio + Worker)
+npm run preview:form   # igual, con el formulario activo (.env.formtest + claves de prueba de Turnstile)
+```
+
+Antes de cada commit: `npm run check`, `npm test` y `npm run build` sin errores.
+Tras crear o renombrar colecciones en `src/content.config.ts`, reiniciar `npm run dev`.

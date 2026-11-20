@@ -1,0 +1,23 @@
+# Textos de /demo, /demo/gracias y /demo/error (spec 004).
+# PENDIENTE (no publicado): duración y formato de la demo (¿videollamada? ¿presencial?).
+demo:
+  title: Solicitar una demo
+  intro: >-
+    Complete el formulario y le escribiremos para coordinar una demostración de Visoria Medical con su equipo.
+  includesTitle: En la demo le mostramos
+  includes:
+    - Cómo se registra un paciente y se consulta su ficha.
+    - Cómo se lleva la historia clínica de cada consulta.
+    - Cómo se programan y reprograman las citas.
+    - Qué reportes y estadísticas puede consultar.
+  messageHint: No incluya datos de pacientes.
+  success: Recibimos su solicitud. Le escribiremos en un plazo de 2 días hábiles.
+  rejected: No pudimos procesar su solicitud. Vuelva a intentarlo en unos segundos.
+  sendFailed: No pudimos enviar su solicitud por un problema de nuestro lado.
+  disabledTitle: Escríbanos para coordinar la demo
+  disabledText: >-
+    Mientras habilitamos el formulario, puede solicitar la demo por email. Indique su nombre, el consultorio o la
+    clínica y cuántos profesionales lo integran.
+  noscript: El formulario necesita JavaScript para la verificación antispam.
+  errorTitle: No pudimos procesar su solicitud
+  errorText: Vuelva al formulario e inténtelo de nuevo.

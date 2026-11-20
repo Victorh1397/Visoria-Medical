@@ -2,27 +2,36 @@
  * Worker de Visoria Landing.
  *
  * Solo recibe peticiones a /api/* (ver `run_worker_first` en wrangler.jsonc); todo lo demás lo
- * sirven los static assets sin pasar por aquí. En la spec 001 no hay endpoints: cualquier ruta
- * de la API responde 404. La spec 004 añade POST /api/demo.
+ * sirven los static assets sin pasar por aquí.
+ *
+ * Rutas:
+ * - POST /api/demo → solicitud de demo (spec 004).
  */
+import { handleDemo, type DemoEnv } from './demo';
 
-export interface Env {
+export interface Env extends DemoEnv {
   ASSETS: Fetcher;
 }
 
-const json = (status: number, body: Record<string, unknown>): Response =>
+const json = (status: number, body: Record<string, unknown>, headers: Record<string, string> = {}): Response =>
   new Response(JSON.stringify(body), {
     status,
     headers: {
       'content-type': 'application/json; charset=utf-8',
       'cache-control': 'no-store',
       'x-visoria-worker': '1',
+      ...headers,
     },
   });
 
 export default {
   async fetch(request, env): Promise<Response> {
     const { pathname } = new URL(request.url);
+
+    if (pathname === '/api/demo') {
+      if (request.method !== 'POST') return json(405, { error: 'method_not_allowed' }, { allow: 'POST' });
+      return handleDemo(request, env);
+    }
 
     if (pathname.startsWith('/api/')) {
       return json(404, { error: 'not_found' });

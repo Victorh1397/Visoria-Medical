@@ -10,5 +10,16 @@
     "not_found_handling": "404-page",
     // El Worker solo se ejecuta para /api/*; el resto lo sirven los static assets (spec 001 R4).
     "run_worker_first": ["/api/*"]
-  }
+  },
+  "vars": {
+    // Formulario de demo (spec 004). Se activa en la spec 007, con el dominio en Cloudflare.
+    // FORM_ENABLED también se lee al construir el sitio (astro.config.mjs → astro:env).
+    "FORM_ENABLED": "false",
+    // PENDIENTE: dirección que recibe las solicitudes (verificada en Email Routing).
+    "DEMO_INBOX": "",
+    // PENDIENTE: remitente del dominio propio, p. ej. demo@<dominio>.
+    "DEMO_FROM": ""
+  },
+  // Secreto: TURNSTILE_SECRET (wrangler secret put TURNSTILE_SECRET). Nunca en este archivo.
+  "send_email": [{ "name": "DEMO_EMAIL" }]
 }

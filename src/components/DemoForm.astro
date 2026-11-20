@@ -1,0 +1,256 @@
+---
+/**
+ * Formulario de solicitud de demo (spec 004 R1–R3, R11).
+ * Sin JS funciona con validación nativa y POST normal; con JS (src/scripts/demo-form.ts) envía con
+ * fetch, muestra errores por campo y anuncia el resultado en una región aria-live.
+ */
+import Button from '@/components/Button.astro';
+import { FIELD, LIMITS, PHONE_PATTERN, ROLES, TEAM_SIZES } from '../../worker/fields';
+
+interface Props {
+  siteKey: string;
+  messageHint: string;
+  success: string;
+  rejected: string;
+  sendFailed: string;
+  contactEmail: string;
+}
+
+const { siteKey, messageHint, success, rejected, sendFailed, contactEmail } = Astro.props;
+const err = (name: string) => `${name}-error`;
+---
+
+<form
+  class="demo-form"
+  method="post"
+  action="/api/demo"
+  data-demo-form
+  data-msg-success={success}
+  data-msg-rejected={rejected}
+  data-msg-send-failed={sendFailed}
+  data-contact-email={contactEmail}
+>
+  <div class="field">
+    <label for="f-name">Nombre y apellido</label>
+    <input
+      id="f-name"
+      name={FIELD.name}
+      type="text"
+      autocomplete="name"
+      required
+      minlength={LIMITS.name.min}
+      maxlength={LIMITS.name.max}
+      aria-describedby={err(FIELD.name)}
+    />
+    <p class="field__error" id={err(FIELD.name)} data-error-for={FIELD.name}></p>
+  </div>
+
+  <div class="field">
+    <label for="f-email">Email</label>
+    <input
+      id="f-email"
+      name={FIELD.email}
+      type="email"
+      autocomplete="email"
+      required
+      maxlength={LIMITS.email.max}
+      aria-describedby={err(FIELD.email)}
+    />
+    <p class="field__error" id={err(FIELD.email)} data-error-for={FIELD.email}></p>
+  </div>
+
+  <div class="field">
+    <label for="f-phone">Teléfono o WhatsApp <span class="field__optional">(opcional)</span></label>
+    <input
+      id="f-phone"
+      name={FIELD.phone}
+      type="tel"
+      autocomplete="tel"
+      inputmode="tel"
+      pattern={PHONE_PATTERN}
+      maxlength={LIMITS.phone.max}
+      aria-describedby={err(FIELD.phone)}
+    />
+    <p class="field__error" id={err(FIELD.phone)} data-error-for={FIELD.phone}></p>
+  </div>
+
+  <div class="field">
+    <label for="f-institution">Consultorio o clínica</label>
+    <input
+      id="f-institution"
+      name={FIELD.institution}
+      type="text"
+      autocomplete="organization"
+      required
+      minlength={LIMITS.institution.min}
+      maxlength={LIMITS.institution.max}
+      aria-describedby={err(FIELD.institution)}
+    />
+    <p class="field__error" id={err(FIELD.institution)} data-error-for={FIELD.institution}></p>
+  </div>
+
+  <div class="field-row">
+    <div class="field">
+      <label for="f-role">Su rol</label>
+      <select id="f-role" name={FIELD.role} required aria-describedby={err(FIELD.role)}>
+        <option value="">Elija una opción</option>
+        {Object.entries(ROLES).map(([value, label]) => <option value={value}>{label}</option>)}
+      </select>
+      <p class="field__error" id={err(FIELD.role)} data-error-for={FIELD.role}></p>
+    </div>
+
+    <div class="field">
+      <label for="f-team">Profesionales en su equipo</label>
+      <select id="f-team" name={FIELD.team} required aria-describedby={err(FIELD.team)}>
+        <option value="">Elija una opción</option>
+        {Object.entries(TEAM_SIZES).map(([value, label]) => <option value={value}>{label}</option>)}
+      </select>
+      <p class="field__error" id={err(FIELD.team)} data-error-for={FIELD.team}></p>
+    </div>
+  </div>
+
+  <div class="field">
+    <label for="f-message">Mensaje <span class="field__optional">(opcional)</span></label>
+    <textarea
+      id="f-message"
+      name={FIELD.message}
+      rows="4"
+      maxlength={LIMITS.message.max}
+      aria-describedby={`f-message-hint ${err(FIELD.message)}`}></textarea>
+    <p class="field__hint" id="f-message-hint">{messageHint}</p>
+    <p class="field__error" id={err(FIELD.message)} data-error-for={FIELD.message}></p>
+  </div>
+
+  <div class="field field--check">
+    <input id="f-privacy" name={FIELD.privacy} type="checkbox" required aria-describedby={err(FIELD.privacy)} />
+    <label for="f-privacy">He leído y acepto la <a href="/privacidad">política de privacidad</a>.</label>
+    <p class="field__error" id={err(FIELD.privacy)} data-error-for={FIELD.privacy}></p>
+  </div>
+
+  {/* Honeypot (R5): invisible para personas, tentador para bots. */}
+  <div class="hp" aria-hidden="true">
+    <label for="f-website">Sitio web</label>
+    <input id="f-website" name={FIELD.honeypot} type="text" tabindex="-1" autocomplete="off" />
+  </div>
+  <input type="hidden" name={FIELD.elapsed} value="" data-elapsed />
+
+  <div class="cf-turnstile" data-sitekey={siteKey} data-language="es" data-theme="light" data-size="flexible"></div>
+
+  <div class="demo-form__submit">
+    <Button type="submit" data-submit>Solicitar demo</Button>
+  </div>
+
+  <p class="demo-form__status" role="status" aria-live="polite" data-status></p>
+</form>
+
+<style>
+  .demo-form {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .field {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .field-row {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  label {
+    font-weight: 500;
+    font-size: var(--step--1);
+  }
+
+  .field__optional,
+  .field__hint {
+    color: var(--c-text-muted);
+    font-weight: 400;
+    font-size: var(--step--1);
+  }
+
+  input:not([type='checkbox']),
+  select,
+  textarea {
+    width: 100%;
+    min-height: 2.75rem;
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--c-line-strong);
+    border-radius: var(--radius);
+    background: var(--c-bg);
+    color: var(--c-text);
+    transition: border-color var(--dur) ease;
+  }
+
+  textarea {
+    resize: vertical;
+  }
+
+  input:not([type='checkbox']):hover,
+  select:hover,
+  textarea:hover {
+    border-color: var(--c-text-muted);
+  }
+
+  [aria-invalid='true'] {
+    border-color: var(--c-error) !important;
+  }
+
+  .field__error {
+    color: var(--c-error);
+    font-size: var(--step--1);
+  }
+
+  .field__error:empty {
+    display: none;
+  }
+
+  .field--check {
+    grid-template-columns: auto 1fr;
+    align-items: start;
+    column-gap: var(--space-3);
+  }
+
+  .field--check input {
+    width: 1.125rem;
+    height: 1.125rem;
+    margin-top: 0.2rem;
+    accent-color: var(--c-accent);
+  }
+
+  .field--check label {
+    font-weight: 400;
+  }
+
+  .field--check .field__error {
+    grid-column: 2;
+  }
+
+  .hp {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .demo-form__status {
+    font-weight: 500;
+  }
+
+  .demo-form__status:empty {
+    display: none;
+  }
+
+  .demo-form__status[data-tone='error'] {
+    color: var(--c-error);
+  }
+
+  @media (min-width: 40rem) {
+    .field-row {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>
