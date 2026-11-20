@@ -6,9 +6,11 @@ import Features from '@/components/home/Features.astro';
 import Security from '@/components/home/Security.astro';
 import Faq from '@/components/home/Faq.astro';
 import FinalCta from '@/components/home/FinalCta.astro';
+import JsonLd from '@/components/JsonLd.astro';
 ---
 
 <Base>
+  <JsonLd slot="head" />
   <Hero />
   <Features />
   <Security />

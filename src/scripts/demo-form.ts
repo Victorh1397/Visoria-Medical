@@ -101,6 +101,9 @@ if (form) {
       if (body.ok) {
         form.reset();
         say(msg.msgSuccess ?? '', 'ok');
+        // Conversión (spec 006 R6): la URL pasa a /demo/gracias sin recargar; Web Analytics en modo SPA la
+        // cuenta como página vista.
+        history.pushState(null, '', '/demo/gracias');
       } else if (body.error === 'invalid' && body.fields) {
         for (const [name, text] of Object.entries(body.fields)) setError(name, text ?? '');
         form.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus();

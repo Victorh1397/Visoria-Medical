@@ -1,0 +1,40 @@
+---
+/**
+ * Datos estructurados de la home (spec 006 R4): Organization + SoftwareApplication.
+ * Solo datos confirmados: sin valoraciones, precios, email ni sistemas operativos inventados.
+ */
+import { getEntry } from 'astro:content';
+import { site } from '@/config/site';
+
+const features = await getEntry('features', 'features');
+const base = Astro.site ?? new URL(Astro.url.origin);
+const url = new URL('/', base).href;
+
+const data = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': `${url}#organization`,
+      name: site.name,
+      url,
+      logo: new URL(site.logo, base).href,
+      ...(site.contactEmail ? { email: site.contactEmail } : {}),
+    },
+    {
+      '@type': 'SoftwareApplication',
+      '@id': `${url}#software`,
+      name: site.name,
+      url,
+      description: site.homeDescription,
+      applicationCategory: 'HealthApplication',
+      inLanguage: 'es',
+      audience: { '@type': 'Audience', audienceType: 'Consultorios y clínicas' },
+      featureList: features?.data.items.map((item) => item.title) ?? [],
+      publisher: { '@id': `${url}#organization` },
+    },
+  ],
+};
+---
+
+<script is:inline type="application/ld+json" set:html={JSON.stringify(data)} />

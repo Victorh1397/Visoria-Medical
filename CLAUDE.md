@@ -62,6 +62,7 @@ npm run dev            # http://localhost:4330, recarga en vivo (sin Worker)
 npm run check          # tipos de Astro + Worker
 npm run check:content  # PENDIENTE visibles → falla (bloquea producción)
 npm test               # tests del Worker en workerd
+npm run og             # regenera public/og.png si cambia el título del hero o la marca
 npm run build          # dist/
 npm run preview        # build + wrangler dev en http://localhost:8787 (sitio + Worker)
 npm run preview:form   # igual, con el formulario activo (.env.formtest + claves de prueba de Turnstile)

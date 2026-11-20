@@ -7,18 +7,24 @@ import '@fontsource/ibm-plex-mono/latin-500.css';
 import '@/styles/tokens.css';
 import '@/styles/base.css';
 import h1Font from '@fontsource/ibm-plex-sans/files/ibm-plex-sans-latin-600-normal.woff2?url';
+import { CF_WEB_ANALYTICS_TOKEN } from 'astro:env/server';
 import Header from '@/components/Header.astro';
 import Footer from '@/components/Footer.astro';
+import Seo from '@/components/Seo.astro';
 import { site } from '@/config/site';
 
 interface Props {
+  /** Título de la página; sin él se usa el de la home. */
   title?: string;
   description?: string;
   noindex?: boolean;
 }
 
-const { title, description = site.description, noindex = false } = Astro.props;
-const fullTitle = title ? `${title} · ${site.name}` : site.name;
+const { title, description = site.homeDescription, noindex = false } = Astro.props;
+const fullTitle = title ? `${title} · ${site.name}` : site.homeTitle;
+// Cloudflare Web Analytics (spec 006 R5, R6): sin cookies; `spa` cuenta los cambios de URL hechos con
+// history.pushState, como el paso a /demo/gracias tras enviar el formulario con JS.
+const beacon = CF_WEB_ANALYTICS_TOKEN ? JSON.stringify({ token: CF_WEB_ANALYTICS_TOKEN, spa: true }) : '';
 ---
 
 <!doctype html>
@@ -26,13 +32,14 @@ const fullTitle = title ? `${title} · ${site.name}` : site.name;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{fullTitle}</title>
-    <meta name="description" content={description} />
-    {noindex && <meta name="robots" content="noindex" />}
+    <Seo title={fullTitle} description={description} noindex={noindex} />
     <link rel="preload" href={h1Font} as="font" type="font/woff2" crossorigin />
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <slot name="head" />
+    {beacon && <script is:inline defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon={beacon} />}
   </head>
   <body>
     <a class="skip-link" href="#contenido">Saltar al contenido</a>

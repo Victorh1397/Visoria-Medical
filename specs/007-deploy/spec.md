@@ -42,6 +42,15 @@ con **[Victor]**.
 - Cabeceras en `public/_headers` (soportado por Workers static assets) para HTML y assets. Las respuestas de
   `/api/*` llevan sus cabeceras desde el Worker.
 - Hasta tener el dominio: el sitio vive en `visoria-landing.<cuenta>.workers.dev` con `FORM_ENABLED=false`.
+- **Variables de build (añadido en la spec 006):** `SITE_URL` (URL pública real: canonical, OG, sitemap y robots;
+  por defecto `https://visoria-landing.workers.dev`, que no es la URL real de la cuenta) y `CF_WEB_ANALYTICS_TOKEN`
+  (o bien activar la inyección automática de Web Analytics desde el panel, sin token). La CSP debe permitir
+  `static.cloudflareinsights.com` (script) y `cloudflareinsights.com` (connect), además de
+  `challenges.cloudflare.com` para Turnstile (script y frame).
+- **A resolver al empezar esta spec (detectado en la 006):** el comando de build incluye `check:content`, que falla
+  mientras falten capturas, revisión legal o datos del responsable. Así, el paso 1 ("desplegar en `*.workers.dev`")
+  no puede pasar. Opciones: excluir `check:content` de las previews por rama y exigirlo solo en `main`, o no conectar
+  `main` a producción hasta que el contenido esté completo.
 
 **Orden de activación:**
 
