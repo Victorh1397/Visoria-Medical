@@ -6,7 +6,7 @@
  * `npm run check:content`. Las líneas comentadas con "# PENDIENTE" no se publican y solo avisan.
  */
 import { defineCollection } from 'astro:content';
-import { file } from 'astro/loaders';
+import { file, glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 
 const annotation = z.object({
@@ -92,4 +92,15 @@ const demo = defineCollection({
   }),
 });
 
-export const collections = { hero, features, security, faq, cta, demo };
+/** Páginas legales (spec 005). `reviewed: false` muestra el aviso y hace fallar check:content (R4). */
+const legal = defineCollection({
+  loader: glob({ pattern: '*.md', base: './src/content/legal' }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    updated: z.coerce.date(),
+    reviewed: z.boolean(),
+  }),
+});
+
+export const collections = { hero, features, security, faq, cta, demo, legal };

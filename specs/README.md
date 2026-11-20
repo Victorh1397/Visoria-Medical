@@ -47,7 +47,7 @@ producción.
 | [002 Design system](002-design-system/spec.md) | done | — (logo en PNG hasta tener SVG) |
 | [003 Home](003-home/spec.md) | in-progress (faltan capturas) | capturas |
 | [004 Formulario de demo](004-demo-form/spec.md) | done | email de contacto; se activa con 007 |
-| [005 Páginas legales](005-legal/spec.md) | approved | revisión de un abogado antes de publicar |
+| [005 Páginas legales](005-legal/spec.md) | in-progress (revisión legal pendiente) | abogado; razón social, estado y email |
 | [006 SEO y analítica](006-seo-analytics/spec.md) | approved | — |
 | [007 Despliegue](007-deploy/spec.md) | approved | migración de los nameservers del dominio |
 

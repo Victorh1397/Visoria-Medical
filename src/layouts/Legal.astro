@@ -1,0 +1,122 @@
+---
+/**
+ * Layout de las páginas legales (spec 005): columna de lectura, fecha de actualización (R3),
+ * índice de secciones y aviso de revisión pendiente (R4).
+ */
+import type { MarkdownHeading } from 'astro';
+import Base from '@/layouts/Base.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  updated: Date;
+  reviewed: boolean;
+  headings: MarkdownHeading[];
+}
+
+const { title, description, updated, reviewed, headings } = Astro.props;
+const sections = headings.filter((h) => h.depth === 2);
+const date = new Intl.DateTimeFormat('es-VE', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }).format(updated);
+---
+
+<Base title={title} description={description}>
+  <article class="container legal">
+    <header class="legal__head">
+      <p class="label">Legal</p>
+      <h1>{title}</h1>
+      <p class="muted">Última actualización: <time datetime={updated.toISOString().slice(0, 10)}>{date}</time></p>
+      {
+        !reviewed && (
+          <p class="legal__review" role="note">
+            <span class="label">Documento pendiente de revisión legal</span>
+            Este texto es un borrador y todavía no lo ha revisado un abogado.
+          </p>
+        )
+      }
+    </header>
+
+    {
+      sections.length > 1 && (
+        <nav class="legal__toc" aria-label="Contenido">
+          <p class="label">Contenido</p>
+          <ol>
+            {sections.map((h) => (
+              <li>
+                <a href={`#${h.slug}`}>{h.text}</a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+      )
+    }
+
+    <div class="legal__body">
+      <slot />
+    </div>
+  </article>
+</Base>
+
+<style>
+  .legal {
+    max-width: calc(var(--measure) + 2 * var(--pad-x));
+    padding-block: var(--space-7) 0;
+  }
+
+  .legal__head {
+    display: grid;
+    gap: var(--space-3);
+    padding-bottom: var(--space-6);
+  }
+
+  .legal__review {
+    display: grid;
+    gap: var(--space-1);
+    margin-top: var(--space-3);
+    padding: var(--space-4);
+    background: var(--c-placeholder);
+    border-radius: var(--radius);
+    font-size: var(--step--1);
+  }
+
+  .legal__toc {
+    padding-block: var(--space-5);
+    border-block: var(--border);
+  }
+
+  .legal__toc ol {
+    display: grid;
+    gap: var(--space-1);
+    margin-top: var(--space-3);
+    padding-left: var(--space-6);
+    font-size: var(--step--1);
+  }
+
+  .legal__toc li::marker {
+    font-family: var(--font-mono);
+    color: var(--c-text-muted);
+  }
+
+  .legal__body {
+    padding-top: var(--space-5);
+  }
+
+  .legal__body :global(h2) {
+    margin-top: var(--space-7);
+    margin-bottom: var(--space-3);
+    font-size: var(--step-2);
+    letter-spacing: 0;
+  }
+
+  .legal__body :global(p),
+  .legal__body :global(ul) {
+    margin-bottom: var(--space-4);
+  }
+
+  .legal__body :global(ul) {
+    padding-left: var(--space-5);
+  }
+
+  .legal__body :global(li) {
+    margin-bottom: var(--space-2);
+  }
+</style>

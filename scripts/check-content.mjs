@@ -26,7 +26,21 @@ const rootPath = decodeURIComponent(ROOT.pathname).replace(/^\/([A-Za-z]:)/, '$1
 
 for await (const file of walk(rootPath)) {
   const lines = (await readFile(file, 'utf8')).split(/\r?\n/);
+  // Páginas legales sin revisión de abogado (spec 005 R4).
+  const reviewedFalse = lines.findIndex((l) => /^reviewed:\s*false\s*$/.test(l.trim()));
+  if (reviewedFalse !== -1) {
+    errors.push(`${relative(process.cwd(), file)}:${reviewedFalse + 1}  reviewed: false (pendiente de revisión legal)`);
+  }
+  let inHtmlComment = false;
   lines.forEach((line, i) => {
+    const t = line.trim();
+    if (t.startsWith('<!--')) inHtmlComment = true;
+    const commented = inHtmlComment;
+    if (t.includes('-->')) inHtmlComment = false;
+    if (commented) {
+      if (line.includes(MARK)) warnings.push(`${relative(process.cwd(), file)}:${i + 1}  ${t}`);
+      return;
+    }
     if (!line.includes(MARK)) return;
     const where = `${relative(process.cwd(), file)}:${i + 1}`;
     const text = line.trim();
